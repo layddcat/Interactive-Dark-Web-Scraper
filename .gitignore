@@ -1,0 +1,17 @@
+# Editor folders
+.vs/
+.idea/
+.vscode/
+
+# Go binaries
+main
+*.exe
+*.test
+
+# Docker & DB
+postgres_data/
+.env
+
+# OS files
+.DS_Store
+Thumbs.db

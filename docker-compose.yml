@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: cti_database
+    environment:
+      POSTGRES_USER: cti_user
+      POSTGRES_PASSWORD: cti_pass
+      POSTGRES_DB: cti_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  tor:
+    image: peterdavehello/tor-socks-proxy:latest
+    container_name: cti_tor_proxy
+    ports:
+      - "9050:9050"
+
+  app:
+    build: ./app
+    container_name: cti_web_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - tor
+    environment:
+      - DB_HOST=db
+      - DB_USER=cti_user
+      - DB_PASSWORD=cti_pass
+      - DB_NAME=cti_db
+    volumes:
+      - ./app:/app
+
+volumes: 
+  postgres_data:

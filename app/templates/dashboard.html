@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>INTERACTIVE DARK WEB SCRAPER PANEL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#0f172a] text-slate-200 font-sans antialiased">
+
+    <nav class="bg-[#1e293b] border-b border-slate-700 p-3 px-8 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <div class="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse"></div>
+            <h1 class="text-lg font-black text-blue-400 tracking-wider uppercase">
+                INTERACTIVE DARK WEB SCRAPER
+            </h1>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <p class="text-green-500 text-xs font-black uppercase tracking-widest hidden sm:block">
+                Active Monitoring
+            </p>
+
+            <a href="/logout"
+               class="bg-red-500/10 hover:bg-red-600 text-red-500 hover:text-white
+                      px-4 py-2 rounded border border-red-500/20
+                      text-xs font-black transition">
+                SIGNOUT
+            </a>
+        </div>
+    </nav>
+
+    <div class="p-6 max-w-[1400px] mx-auto">
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+
+            <div class="bg-[#1e293b] p-5 rounded-xl border border-slate-700/50 shadow-lg border-b-2 border-b-blue-500">
+                <h3 class="text-slate-400 text-xs uppercase font-black mb-1">Total</h3>
+                <p class="text-3xl font-black text-white leading-none">{{ .totalCount }}</p>
+            </div>
+
+            <div class="bg-[#1e293b] p-5 rounded-xl border border-red-500/20 shadow-lg border-l-4 border-l-red-500">
+                <h3 class="text-red-400 text-xs uppercase font-black mb-1">High Risk</h3>
+                <p class="text-3xl font-black text-white leading-none">{{ .highCriticalityCount }}</p>
+            </div>
+
+            <div class="bg-[#1e293b] p-5 rounded-xl border border-orange-500/20 shadow-lg border-l-4 border-l-orange-500">
+                <h3 class="text-orange-400 text-xs uppercase font-black mb-1">Offline</h3>
+                <p class="text-3xl font-black text-white">{{ .offlineCount }}</p>
+            </div>
+
+            <div class="bg-[#1e293b] p-5 rounded-xl border border-cyan-500/20 shadow-lg border-l-4 border-l-cyan-500">
+                <h3 class="text-cyan-400 text-xs uppercase font-black mb-1">Leaks</h3>
+                <p class="text-3xl font-black text-white">{{ .leakCount }}</p>
+            </div>
+
+        </div>
+
+        <div class="bg-[#1e293b] rounded-xl border border-slate-700/50 shadow-2xl overflow-hidden">
+
+            <table class="w-full text-left table-fixed">
+
+                <thead class="bg-slate-900/50 text-slate-400 text-xs uppercase font-black tracking-widest">
+                    <tr>
+                        <th class="p-4 px-6 w-2/5">Threat Header / Source</th>
+                        <th class="p-4 text-center w-24">Status</th>
+                        <th class="p-4 w-40">Category</th>
+                        <th class="p-4 text-center w-20">Score</th>
+                        <th class="p-4 w-32">Time</th>
+                        <th class="p-4 text-right w-24">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody class="text-[13px] font-medium">
+
+                    {{ range .items }}
+                    <tr class="border-b border-slate-700/20 hover:bg-slate-800 transition">
+
+                        <td class="p-4 px-6">
+                            <div class="font-bold text-slate-100 truncate text-[15px]" title="{{ .Title }}">
+                                {{ .Title }}
+                            </div>
+                            <div class="text-xs text-slate-400 font-mono truncate opacity-85">
+                                {{ .SourceURL }}
+                            </div>
+                        </td>
+
+                        <td class="p-4 text-center">
+                            <span class="{{ if .IsActive }}text-green-500{{ else }}text-red-500/70{{ end }}
+                                         text-xs font-black uppercase">
+                                {{ if .IsActive }}● Online{{ else }}○ Offline{{ end }}
+                            </span>
+                        </td>
+
+                        <td class="p-4">
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-blue-400
+                                         text-xs font-black uppercase border border-blue-500/10">
+                                {{ .Category }}
+                            </span>
+                        </td>
+
+                        <td class="p-4 text-center font-black text-sm
+                            {{ if ge .CriticalityScore 7 }}text-red-500
+                               {{ else if ge .CriticalityScore 1 }}text-green-500
+                               {{ else }}text-slate-500{{ end }}">
+                            {{ .CriticalityScore }}/10
+                        </td>
+
+                        <td class="p-4 text-slate-300 font-mono text-xs">
+                            {{ .PublishedAt }}
+                        </td>
+
+                        <td class="p-4 text-right">
+                            <a href="/detail/{{ .ID }}"
+                               class="text-xs font-black uppercase
+                                      border border-blue-500/20 px-3 py-1.5 rounded
+                                      text-blue-500 hover:text-white hover:bg-blue-600 transition">
+                                Analyze
+                            </a>
+                        </td>
+
+                    </tr>
+                    {{ end }}
+
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

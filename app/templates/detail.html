@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İstihbarat Analiz Raporu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-200 p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <a href="/dashboard" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 transition">
+                &larr; Dashboard'a Dön
+            </a>
+            <span class="text-xs text-slate-500 font-mono">Vaka ID: #CTI-{{.item.ID}}</span>
+        </div>
+
+        <div class="bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden">
+            <div class="p-8 border-b border-slate-700 bg-slate-750/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-blue-900/50 text-blue-400 border border-blue-700">
+                        {{.item.Category}}
+                    </span>
+                    <span class="px-3 py-1 rounded-full text-[10px] font-bold {{if ge .item.CriticalityScore 7}}bg-red-900/50 text-red-400 border border-red-700{{else}}bg-green-900/50 text-green-400 border border-green-700{{end}}">
+                        SKOR: {{.item.CriticalityScore}}/10
+                    </span>
+                </div>
+                <h2 class="text-3xl font-black text-white leading-tight mb-2">{{.item.Title}}</h2>
+                <p class="text-slate-400 text-sm">Kaynak: <span class="text-blue-400 font-mono">{{.item.SourceURL}}</span></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3">
+                <div class="md:col-span-2 p-8 border-r border-slate-700">
+                    <section class="mb-8">
+                        <h4 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest"> Analist Değerlendirmesi</h4>
+                        <div class="bg-slate-900/50 p-6 rounded-xl border border-slate-700 leading-relaxed text-slate-300 italic">
+                            "{{.analysisComment}}"
+                        </div>
+                    </section>
+
+                    <section>
+                        <h4 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest"> Ham Veri (Raw Content)</h4>
+                        <pre class="bg-slate-900 p-6 rounded-xl border border-slate-700 text-xs text-green-400 overflow-x-auto font-mono whitespace-pre-wrap">{{.item.RawContent}}</pre>
+                    </section>
+                </div>
+
+                <div class="p-8 bg-slate-800/50">
+                    <div class="mb-8">
+                        <h4 class="text-xs uppercase font-bold text-slate-500 mb-2">Tahmini Etki</h4>
+                        <p class="text-sm font-bold text-white">{{.impactLevel}}</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h4 class="text-xs uppercase font-bold text-slate-500 mb-2">Önerilen Aksiyon</h4>
+                        <div class="text-sm text-yellow-500 font-medium leading-relaxed bg-yellow-900/20 p-3 rounded border border-yellow-700/30">
+                            {{.recommendedAction}}
+                        </div>
+                    </div>
+
+                    <div class="mb-8 border-t border-slate-700 pt-6">
+                        <h4 class="text-xs uppercase font-bold text-slate-500 mb-2">Tespit Tarihi</h4>
+                        <p class="text-xs font-mono text-slate-300">{{.item.PublishedAt}}</p>
+                    </div>
+
+                    <button onclick="window.print()" class="w-full py-3 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2">
+                         Raporu Yazdır (PDF)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
