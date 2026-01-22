@@ -21,6 +21,9 @@ Proje Docker ortamında çalışacak şekilde hazırlanmıştır. Gerekli tüm b
 
 docker-compose up --build
 
+## 3.1 Yapılandırma 
+Sistem, izlenecek Dark Web kaynaklarını projenin ana dizininde yer alan targets.yaml dosyasından otonom olarak okur. Taramayı başlatmadan önce, bu dosyayı düzenleyerek izlemek istediğiniz .onion adreslerini listeye eklemelisiniz.
+
 ## 4. Uygulama Arayüzü: 
 URL: http://localhost:8080/login
 
